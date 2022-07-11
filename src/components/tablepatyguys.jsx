@@ -90,21 +90,13 @@ const TablePatyGuys = () => {
         return stringcountguys
 
     }
-
-    if(guys.length){
-
-        return  (
-            <>
-                {stringCountGuys(guys.length)}
-                {table}
-            </>
-        )
-
-    }else{
-
-        return stringCountGuys(guys.length)
-
-    }
+    
+    return  (
+        <>
+            {stringCountGuys(guys.length)}
+            {(guys.length !== 0) && table}
+        </>
+    )
 
 }
 
