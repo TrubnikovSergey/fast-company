@@ -1,0 +1,10 @@
+import React from 'react'
+import Counter from './components/counter.jsx';
+
+const App = () => {
+
+    return <Counter/>
+           
+}
+
+export default App
