@@ -1,58 +1,42 @@
 import React,{useState} from "react"
 
-const Counter = () => {
+const Counter = (props) => {
+    
+    const [value, setValue] = useState(props.value)
 
-    const [count, setCount] = useState(0)
-    const [tags, setTags] = useState(['tag1','tag2','tag3'])
-
-    const formatCount = () => {
-        return count === 0 ? 'empty' : count
+    const formatValue = () => {
+        return value === 0 ? 'empty' : value
     }
 
     const getClasses = () => {
 
         let classesBG = 'badge m-2 '
-        classesBG += count === 0 ? 'bg-warning' : 'bg-primary'
+        classesBG += value === 0 ? 'bg-warning' : 'bg-primary'
         return classesBG
 
     }
 
     const handleIncrement = () => {
-        setCount((prevState) => prevState + 1)
+        setValue((prevState) => prevState + 1)
     }
 
     
     const handleDecrement = () => {
-        setCount((prevState) => prevState - 1)
-    }
-
-    const handelTagChange = (id) => {
-
-        // setTags(['tag4','tag5'])
-        setTags((prevState) => prevState.filter((tag) => tag !== id))
-
-    }
-
-    const tagsRender = () => {
-        if(tags.length === 0){
-            return 'No Tags'
-        }
-        return tags.map(tag => 
-            <li key={tag} 
-            className='btn btn-primary btn-sm m-2'
-            onClick={() => handelTagChange(tag)}>{tag}</li>
-        )
+        setValue((prevState) => prevState - 1)
     }
 
     return (
-    <>
-        <ul>
-            {tagsRender()}
-        </ul>
-        <span className={getClasses()}>{formatCount()}</span>
+    <div>
+        <span>{props.name}</span>
+        <span className={getClasses()}>{formatValue()}</span>
         <button className="btn btn-primary btn-sm m-2" onClick={handleIncrement}>+</button>
         <button className="btn btn-primary btn-sm m-2" onClick={handleDecrement}>-</button>
-    </>)
+        <button className="btn-danger btn-sm m-2"
+            onClick={() => props.onDelete(props.id)}
+        >
+            Delete
+        </button>
+    </div>)
 }
 
 export default Counter
