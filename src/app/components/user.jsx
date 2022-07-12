@@ -1,11 +1,11 @@
 import React from "react"
-
 import decorateQualities from './qualitie'
+import BookMark from "./bookmark"
 
 const User = (props) => {
 
     const {_id, name, qualities, profession, completedMeetings, rate, onDelete} = props
-    
+
     return ( 
         <tr>
             <td>{name}</td>
@@ -14,9 +14,7 @@ const User = (props) => {
             <td>{completedMeetings}</td>
             <td>{rate}/5</td>
             <td>
-                {/* <svg class="bi" width="32" height="32" fill="currentColor">
-                    <use xlink:href="bootstrap-icons.svg#heart-fill"/>
-                </svg> */}
+                <BookMark status = 'false'/>
             </td>
             <td><button 
                     type = "button" 
