@@ -10,9 +10,7 @@ const User = (props) => {
             profession, 
             completedMeetings, 
             rate, 
-            onDelete,
-            status,
-            onChangeStatus} = props
+            onDelete} = props
 
     return ( 
         <tr>
@@ -23,9 +21,7 @@ const User = (props) => {
             <td>{rate}/5</td>
             <td>
                 <BookMark 
-                    status = {status}
-                    onChangeStatus = {onChangeStatus}
-                    id ={_id}
+                    {...props}
                 />
             </td>
             <td><button 
