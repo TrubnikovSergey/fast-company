@@ -4,7 +4,15 @@ import BookMark from "./bookmark"
 
 const User = (props) => {
 
-    const {_id, name, qualities, profession, completedMeetings, rate, onDelete} = props
+    const {_id, 
+            name, 
+            qualities, 
+            profession, 
+            completedMeetings, 
+            rate, 
+            onDelete,
+            status,
+            onChangeStatus} = props
 
     return ( 
         <tr>
@@ -14,7 +22,11 @@ const User = (props) => {
             <td>{completedMeetings}</td>
             <td>{rate}/5</td>
             <td>
-                <BookMark status = 'false'/>
+                <BookMark 
+                    status = {status}
+                    onChangeStatus = {onChangeStatus}
+                    id ={_id}
+                />
             </td>
             <td><button 
                     type = "button" 

@@ -1,15 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
 
-const BookMark = ({status}) => {
-
-    const [bookMark, setBookMark] = useState(status)
-
-    const handleClick = () => {
-        
-        setBookMark(!bookMark)
-    }
-
-    return <button className={bookMark ? 'bi bi-bookmark' : 'bi bi-bookmark-fill'} onClick = {handleClick}></button>
+const BookMark = ({status, id, onChangeStatus}) => {
+    return <button 
+                className={status ? 'bi bi-bookmark-fill' : 'bi bi-bookmark'} onClick={() => onChangeStatus(id)}>
+            </button>
 }
 
 export default BookMark
