@@ -1,30 +1,12 @@
-import React, {useState} from 'react'
 import User from './user'
-import API from '../api'
-import SearchStatus from './searchStatus'
 
-const Users = () => {
+const Users = ({users, status, ...rest}) => {
 
-    const [users, setUsers] = useState(API.users.fetchAll())
-    const [status, setStatus] = useState(users.map(item => ({_id: item._id, status: false})))
-    
-    const handlerDeletUser = (id) => {
-        setUsers((oldState) => oldState.filter(user => user._id !== id))
-    }
-
-    const handleChangeStatus = (id) => {
-
-        setStatus((oldStatus) => oldStatus.map(item => {
-                if(item._id === String(id)){
-                    item.status = !item.status
-                }
-                return item
-            })
-        )
-    }
 
     const createTable = () => {  
         
+        const {handlerDeletUser, handleChangeStatus} = rest
+
         return (
             <table className = "table">
                 <thead>
@@ -53,7 +35,6 @@ const Users = () => {
     
     return  (
         <>
-            <SearchStatus count = {users.length}/>
             {(users.length > 0) && createTable()}
         </>
     )
