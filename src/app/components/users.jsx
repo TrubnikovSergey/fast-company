@@ -1,4 +1,5 @@
 import User from './user'
+import Pagination from './pagination'
 
 const Users = ({users, status, ...rest}) => {
 
@@ -8,29 +9,37 @@ const Users = ({users, status, ...rest}) => {
         const {handlerDeletUser, handleChangeStatus} = rest
 
         return (
-            <table className = "table">
-                <thead>
-                    <tr>
-                        <th scope = "col">Имя</th>
-                        <th scope = "col">Качество</th>
-                        <th scope = "col">Профессия</th>
-                        <th scope = "col">Встретился, раз</th>
-                        <th scope = "col">Оценка</th>
-                        <th scope = "col">Избранное</th>
-                        <th scope = "col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map(user =>  
-                        <User 
-                            key = {user._id} 
-                            {...user} 
-                            onDelete={handlerDeletUser}
-                            status = {status.find(item => item._id === user._id).status} 
-                            onChangeStatus = {handleChangeStatus}
-                        />)}
-                </tbody>
-            </table>) 
+            <>
+                <table className = "table">
+                    <thead>
+                        <tr>
+                            <th scope = "col">Имя</th>
+                            <th scope = "col">Качество</th>
+                            <th scope = "col">Профессия</th>
+                            <th scope = "col">Встретился, раз</th>
+                            <th scope = "col">Оценка</th>
+                            <th scope = "col">Избранное</th>
+                            <th scope = "col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map(user =>  
+                            <User 
+                                key = {user._id} 
+                                {...user} 
+                                onDelete={handlerDeletUser}
+                                status = {status.find(item => item._id === user._id).status} 
+                                onChangeStatus = {handleChangeStatus}
+                            />)}
+                    </tbody>
+                </table>
+                <Pagination 
+                itemsCount={count} 
+                pageSize={pageSize} 
+                currentPage = {currentPage}
+                onPageChange = {handlePageChange}
+                />
+            </>) 
         }
     
     return  (
