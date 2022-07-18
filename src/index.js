@@ -1,16 +1,15 @@
 import React from 'react'
-
 import { createRoot } from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.css'
-import TablePatyGuys from './components/tablepatyguys';
+import App from './app/App';
 
 const container = document.querySelector('#root')
 const root = createRoot(container)
 
-const App = () => {
+root.render(
 
-    return <TablePatyGuys/>
-           
-}
-
-root.render(<App/>)
+    <React.StrictMode>
+        <App/>
+    </React.StrictMode>    
+    
+)
