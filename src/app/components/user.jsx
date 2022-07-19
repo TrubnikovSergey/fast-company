@@ -1,18 +1,19 @@
 import React from "react"
-import decorateQualities from './qualitie'
+import decorateQualities from "./qualitie"
 import BookMark from "./bookmark"
 
 const User = (props) => {
+    const {
+        _id,
+        name,
+        qualities,
+        profession,
+        completedMeetings,
+        rate,
+        onDelete,
+    } = props
 
-    const {_id, 
-            name, 
-            qualities, 
-            profession, 
-            completedMeetings, 
-            rate, 
-            onDelete} = props
-
-    return ( 
+    return (
         <tr>
             <td>{name}</td>
             <td>{decorateQualities(qualities)}</td>
@@ -20,14 +21,15 @@ const User = (props) => {
             <td>{completedMeetings}</td>
             <td>{rate}/5</td>
             <td>
-                <BookMark 
-                    {...props}
-                />
+                <BookMark {...props} />
             </td>
-            <td><button 
-                    type = "button" 
-                    className = "btn btn-danger badge m-2" 
-                    onClick={() => onDelete(_id)}>delete
+            <td>
+                <button
+                    type="button"
+                    className="btn btn-danger badge m-2"
+                    onClick={() => onDelete(_id)}
+                >
+                    delete
                 </button>
             </td>
         </tr>
