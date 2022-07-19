@@ -61,7 +61,7 @@ const Users = ({ users, status, ...rest }) => {
 
 Users.propTypes = {
     users: PropTypes.array.isRequired,
-    status: PropTypes.bool.isRequired,
+    status: PropTypes.array.isRequired,
     handlerDeletUser: PropTypes.func.isRequired,
     handleChangeStatus: PropTypes.func.isRequired
 }
