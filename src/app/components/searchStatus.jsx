@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from "prop-types"
 
 const SearchStatus = ({ count }) => {
     if (count === 0) {
@@ -18,10 +19,11 @@ const SearchStatus = ({ count }) => {
         strCount = `${count} человек тусанет`
     }
 
-    let stringcountguys = (
-        <span className="badge bg-primary">{strCount} с тобой сегодня</span>
-    )
-    return stringcountguys
+    return <span className="badge bg-primary">{strCount} с тобой сегодня</span>
+}
+
+SearchStatus.propTypes = {
+    count: PropTypes.number.isRequired
 }
 
 export default SearchStatus

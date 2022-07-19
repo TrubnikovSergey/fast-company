@@ -1,7 +1,8 @@
 import User from "./user"
 import Pagination from "./pagination"
-import { useState } from "react"
+import React, { useState } from "react"
 import { paginate } from "../utils/paginate"
+import PropTypes from "prop-types"
 
 const Users = ({ users, status, ...rest }) => {
     const [currentPage, setCurrentPage] = useState(1)
@@ -56,6 +57,13 @@ const Users = ({ users, status, ...rest }) => {
     }
 
     return <>{count > 0 && createTable()}</>
+}
+
+Users.propTypes = {
+    users: PropTypes.array.isRequired,
+    status: PropTypes.bool.isRequired,
+    handlerDeletUser: PropTypes.func.isRequired,
+    handleChangeStatus: PropTypes.func.isRequired
 }
 
 export default Users

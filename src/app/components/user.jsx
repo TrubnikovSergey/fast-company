@@ -1,6 +1,7 @@
 import React from "react"
-import decorateQualities from "./qualitie"
+import DecorateQualities from "./qualitie"
 import BookMark from "./bookmark"
+import PropTypes from "prop-types"
 
 const User = (props) => {
     const {
@@ -10,13 +11,15 @@ const User = (props) => {
         profession,
         completedMeetings,
         rate,
-        onDelete,
+        onDelete
     } = props
 
     return (
         <tr>
             <td>{name}</td>
-            <td>{decorateQualities(qualities)}</td>
+            <td>
+                <DecorateQualities qualities={qualities} />
+            </td>
             <td>{profession.name}</td>
             <td>{completedMeetings}</td>
             <td>{rate}/5</td>
@@ -34,6 +37,16 @@ const User = (props) => {
             </td>
         </tr>
     )
+}
+
+User.propTypes = {
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    qualities: PropTypes.array.isRequired,
+    profession: PropTypes.object.isRequired,
+    completedMeetings: PropTypes.number.isRequired,
+    rate: PropTypes.number.isRequired,
+    onDelete: PropTypes.func.isRequired
 }
 
 export default User
