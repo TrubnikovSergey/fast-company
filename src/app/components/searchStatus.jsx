@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 
 const SearchStatus = ({ count }) => {
     if (count === 0) {
-        return <span className="badge bg-danger">Никто с тобой не тусанет</span>
+        return <div className="badge bg-danger">Никто с тобой не тусанет</div>
     }
 
     const lastNumber = count % 10
@@ -19,7 +19,7 @@ const SearchStatus = ({ count }) => {
         strCount = `${count} человек тусанет`
     }
 
-    return <span className="badge bg-primary">{strCount} с тобой сегодня</span>
+    return <div className="badge bg-primary">{strCount} с тобой сегодня</div>
 }
 
 SearchStatus.propTypes = {

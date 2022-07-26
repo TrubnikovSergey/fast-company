@@ -1,58 +1,106 @@
 import User from "./user"
 import Pagination from "./pagination"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { paginate } from "../utils/paginate"
 import PropTypes from "prop-types"
+import api from "../api"
+import GroupList from "./groupList"
+import SearchStatus from "./searchStatus"
 
 const Users = ({ users, status, ...rest }) => {
     const [currentPage, setCurrentPage] = useState(1)
-    const count = users.length
+    const [professions, setProfession] = useState()
+    const [selectProf, setSelectProf] = useState()
     const pageSize = 4
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex)
     }
+    const handleProfessionlSelect = (item) => {
+        setSelectProf(item)
+    }
 
-    const userCrop = paginate(users, currentPage, pageSize)
+    useEffect(() => {
+        api.professions.fetchAll().then((data) => setProfession(data))
+    }, [])
+
+    useEffect(() => {
+        setCurrentPage(1)
+    }, [selectProf])
+
+    const filteredUsers = selectProf
+        ? users.filter((user) => user.profession === selectProf)
+        : users
+
+    const count = filteredUsers.length
+    const userCrop = paginate(filteredUsers, currentPage, pageSize)
+
+    const clearFilter = () => {
+        setSelectProf()
+    }
 
     const createTable = () => {
         const { handlerDeletUser, handleChangeStatus } = rest
 
         return (
-            <>
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Имя</th>
-                            <th scope="col">Качество</th>
-                            <th scope="col">Профессия</th>
-                            <th scope="col">Встретился, раз</th>
-                            <th scope="col">Оценка</th>
-                            <th scope="col">Избранное</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {userCrop.map((user) => (
-                            <User
-                                key={user._id}
-                                {...user}
-                                onDelete={handlerDeletUser}
-                                status={
-                                    status.find((item) => item._id === user._id)
-                                        .status
-                                }
-                                onChangeStatus={handleChangeStatus}
-                            />
-                        ))}
-                    </tbody>
-                </table>
-                <Pagination
-                    itemsCount={count}
-                    pageSize={pageSize}
-                    currentPage={currentPage}
-                    onPageChange={handlePageChange}
-                />
-            </>
+            <div className="d-flex">
+                {professions && (
+                    <div className="d-flex flex-column flex-shrink-0 p-3">
+                        <GroupList
+                            selectItem={selectProf}
+                            items={professions}
+                            onItemSelect={handleProfessionlSelect}
+                        />
+                        <button
+                            className="btn btn-secondary mt-2"
+                            onClick={clearFilter}
+                        >
+                            Очистить
+                        </button>
+                    </div>
+                )}
+                <div className="d-flex flex-column">
+                    <div className="w-10 bd-highlight">
+                        <SearchStatus count={count} />
+                    </div>
+
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Имя</th>
+                                <th scope="col">Качество</th>
+                                <th scope="col">Профессия</th>
+                                <th scope="col">Встретился, раз</th>
+                                <th scope="col">Оценка</th>
+                                <th scope="col">Избранное</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {userCrop.map((user) => (
+                                <User
+                                    key={user._id}
+                                    {...user}
+                                    onDelete={handlerDeletUser}
+                                    status={
+                                        status.find(
+                                            (item) => item._id === user._id
+                                        ).status
+                                    }
+                                    onChangeStatus={handleChangeStatus}
+                                />
+                            ))}
+                        </tbody>
+                    </table>
+                    <div className="d-flex justify-content-center">
+                        <Pagination
+                            itemsCount={count}
+                            pageSize={pageSize}
+                            currentPage={currentPage}
+                            onPageChange={handlePageChange}
+                        />
+                    </div>
+                </div>
+            </div>
         )
     }
 
