@@ -11,7 +11,7 @@ const Users = ({ users, ...rest }) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [professions, setProfession] = useState()
     const [selectProf, setSelectProf] = useState()
-    const pageSize = 4
+    const pageSize = 2
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex)
     }
@@ -38,6 +38,9 @@ const Users = ({ users, ...rest }) => {
     }
 
     const count = filteredUsers.length
+    if ((currentPage - 1) * pageSize >= filteredUsers.length) {
+        setCurrentPage(currentPage - 1)
+    }
     const userCrop = paginate(filteredUsers, currentPage, pageSize)
 
     const clearFilter = () => {
@@ -69,34 +72,36 @@ const Users = ({ users, ...rest }) => {
                         <SearchStatus count={count} />
                     </div>
 
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Имя</th>
-                                <th scope="col">Качество</th>
-                                <th scope="col">Профессия</th>
-                                <th scope="col">Встретился, раз</th>
-                                <th scope="col">Оценка</th>
-                                <th scope="col">Избранное</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {userCrop.map((user) => (
-                                <User
-                                    key={user._id}
-                                    {...user}
-                                    onDelete={handlerDeletUser}
-                                    status={
-                                        users.find(
-                                            (item) => item._id === user._id
-                                        ).bookmark
-                                    }
-                                    onChangeStatus={handleChangeStatus}
-                                />
-                            ))}
-                        </tbody>
-                    </table>
+                    {users.length > 0 && (
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Имя</th>
+                                    <th scope="col">Качество</th>
+                                    <th scope="col">Профессия</th>
+                                    <th scope="col">Встретился, раз</th>
+                                    <th scope="col">Оценка</th>
+                                    <th scope="col">Избранное</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {userCrop.map((user) => (
+                                    <User
+                                        key={user._id}
+                                        {...user}
+                                        onDelete={handlerDeletUser}
+                                        status={
+                                            users.find(
+                                                (item) => item._id === user._id
+                                            ).bookmark
+                                        }
+                                        onChangeStatus={handleChangeStatus}
+                                    />
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
                     <div className="d-flex justify-content-center">
                         <Pagination
                             itemsCount={count}
@@ -110,11 +115,11 @@ const Users = ({ users, ...rest }) => {
         )
     }
 
-    return <>{createTable()}</>
+    return createTable()
 }
 
 Users.propTypes = {
-    users: PropTypes.array.isRequired,
+    users: PropTypes.array,
     handlerDeletUser: PropTypes.func.isRequired,
     handleChangeStatus: PropTypes.func.isRequired
 }
