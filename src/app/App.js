@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Users from "./components/users.jsx"
 import API from "./api"
 
@@ -8,6 +8,10 @@ const App = () => {
     const handlerDeletUser = (id) => {
         setUsers((oldState) => oldState.filter((user) => user._id !== id))
     }
+
+    useEffect(() => {
+        API.users.fetchAll().then((data) => setUsers(data))
+    }, [])
 
     const handleChangeStatus = (id) => {
         setUsers(

@@ -27,9 +27,15 @@ const Users = ({ users, ...rest }) => {
         setCurrentPage(1)
     }, [selectProf])
 
-    const filteredUsers = selectProf
-        ? users.filter((user) => user.profession === selectProf)
-        : users
+    let filteredUsers = null
+    if (selectProf) {
+        filteredUsers = users.filter(
+            (user) =>
+                JSON.stringify(user.profession) === JSON.stringify(selectProf)
+        )
+    } else {
+        filteredUsers = users
+    }
 
     const count = filteredUsers.length
     const userCrop = paginate(filteredUsers, currentPage, pageSize)
@@ -104,7 +110,7 @@ const Users = ({ users, ...rest }) => {
         )
     }
 
-    return <>{count > 0 && createTable()}</>
+    return <>{createTable()}</>
 }
 
 Users.propTypes = {
