@@ -4,18 +4,16 @@ import API from "./api"
 
 const App = () => {
     const [users, setUsers] = useState(API.users.fetchAll())
-    const [status, setStatus] = useState(
-        users.map((item) => ({ _id: item._id, status: false }))
-    )
+
     const handlerDeletUser = (id) => {
         setUsers((oldState) => oldState.filter((user) => user._id !== id))
     }
 
     const handleChangeStatus = (id) => {
-        setStatus(
-            status.map((item) => {
+        setUsers(
+            users.map((item) => {
                 if (item._id === id) {
-                    item.status = !item.status
+                    item.bookmark = !item.bookmark
                 }
                 return item
             })
@@ -29,7 +27,6 @@ const App = () => {
                     users={users}
                     handlerDeletUser={handlerDeletUser}
                     handleChangeStatus={handleChangeStatus}
-                    status={status}
                 />
             )}
         </>

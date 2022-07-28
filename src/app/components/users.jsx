@@ -7,7 +7,7 @@ import api from "../api"
 import GroupList from "./groupList"
 import SearchStatus from "./searchStatus"
 
-const Users = ({ users, status, ...rest }) => {
+const Users = ({ users, ...rest }) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [professions, setProfession] = useState()
     const [selectProf, setSelectProf] = useState()
@@ -82,9 +82,9 @@ const Users = ({ users, status, ...rest }) => {
                                     {...user}
                                     onDelete={handlerDeletUser}
                                     status={
-                                        status.find(
+                                        users.find(
                                             (item) => item._id === user._id
-                                        ).status
+                                        ).bookmark
                                     }
                                     onChangeStatus={handleChangeStatus}
                                 />
@@ -109,7 +109,6 @@ const Users = ({ users, status, ...rest }) => {
 
 Users.propTypes = {
     users: PropTypes.array.isRequired,
-    status: PropTypes.array.isRequired,
     handlerDeletUser: PropTypes.func.isRequired,
     handleChangeStatus: PropTypes.func.isRequired
 }
