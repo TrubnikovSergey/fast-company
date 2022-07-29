@@ -52,7 +52,7 @@ const Users = ({ users, ...rest }) => {
 
         return (
             <div className="d-flex">
-                {professions && (
+                {professions && users.length > 0 && (
                     <div className="d-flex flex-column flex-shrink-0 p-3">
                         <GroupList
                             selectItem={selectProf}
@@ -72,7 +72,7 @@ const Users = ({ users, ...rest }) => {
                         <SearchStatus count={count} />
                     </div>
 
-                    {users.length > 0 && (
+                    {userCrop.length > 0 && (
                         <table className="table">
                             <thead>
                                 <tr>
