@@ -3,42 +3,58 @@ import PropTypes from "prop-types"
 
 const GroupList = ({
     items,
-    valueProperties,
-    contentProperties,
+    valueProperty,
+    contentProperty,
     onItemSelect,
-    selectItem
+    selectedItem
 }) => {
-    return (
-        <ul className="list-group">
-            {Object.keys(items).map((key) => {
-                return (
+    if (!Array.isArray(items)) {
+        return (
+            <ul className="list-group">
+                {Object.keys(items).map((item) => (
                     <li
-                        key={items[key][valueProperties]}
+                        key={items[item][valueProperty]}
                         className={
                             "list-group-item" +
-                            (items[key] === selectItem ? " active" : "")
+                            (items[item] === selectedItem ? " active" : "")
                         }
+                        onClick={() => onItemSelect(items[item])}
                         role="button"
-                        onClick={() => onItemSelect(items[key])}
                     >
-                        {items[key][contentProperties]}
+                        {items[item][contentProperty]}
                     </li>
-                )
-            })}
+                ))}
+            </ul>
+        )
+    }
+    return (
+        <ul className="list-group">
+            {items.map((item) => (
+                <li
+                    key={item[valueProperty]}
+                    className={
+                        "list-group-item" +
+                        (item === selectedItem ? " active" : "")
+                    }
+                    onClick={() => onItemSelect(item)}
+                    role="button"
+                >
+                    {item[contentProperty]}
+                </li>
+            ))}
         </ul>
     )
 }
 GroupList.defaultProps = {
-    valueProperties: "_id",
-    contentProperties: "name"
+    valueProperty: "_id",
+    contentProperty: "name"
 }
-
 GroupList.propTypes = {
-    items: PropTypes.object.isRequired,
-    contentProperties: PropTypes.string.isRequired,
-    valueProperties: PropTypes.string.isRequired,
+    items: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+    valueProperty: PropTypes.string.isRequired,
+    contentProperty: PropTypes.string.isRequired,
     onItemSelect: PropTypes.func,
-    selectItem: PropTypes.object
+    selectedItem: PropTypes.object
 }
 
 export default GroupList

@@ -7,11 +7,11 @@ import api from "../api"
 import GroupList from "./groupList"
 import SearchStatus from "./searchStatus"
 
-const Users = ({ users, status, ...rest }) => {
+const Users = ({ users, ...rest }) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [professions, setProfession] = useState()
     const [selectProf, setSelectProf] = useState()
-    const pageSize = 4
+    const pageSize = 2
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex)
     }
@@ -27,11 +27,20 @@ const Users = ({ users, status, ...rest }) => {
         setCurrentPage(1)
     }, [selectProf])
 
-    const filteredUsers = selectProf
-        ? users.filter((user) => user.profession === selectProf)
-        : users
+    let filteredUsers = null
+    if (selectProf) {
+        filteredUsers = users.filter(
+            (user) =>
+                JSON.stringify(user.profession) === JSON.stringify(selectProf)
+        )
+    } else {
+        filteredUsers = users
+    }
 
     const count = filteredUsers.length
+    if ((currentPage - 1) * pageSize >= filteredUsers.length) {
+        setCurrentPage(currentPage - 1)
+    }
     const userCrop = paginate(filteredUsers, currentPage, pageSize)
 
     const clearFilter = () => {
@@ -43,7 +52,7 @@ const Users = ({ users, status, ...rest }) => {
 
         return (
             <div className="d-flex">
-                {professions && (
+                {professions && users.length > 0 && (
                     <div className="d-flex flex-column flex-shrink-0 p-3">
                         <GroupList
                             selectItem={selectProf}
@@ -63,34 +72,36 @@ const Users = ({ users, status, ...rest }) => {
                         <SearchStatus count={count} />
                     </div>
 
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Имя</th>
-                                <th scope="col">Качество</th>
-                                <th scope="col">Профессия</th>
-                                <th scope="col">Встретился, раз</th>
-                                <th scope="col">Оценка</th>
-                                <th scope="col">Избранное</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {userCrop.map((user) => (
-                                <User
-                                    key={user._id}
-                                    {...user}
-                                    onDelete={handlerDeletUser}
-                                    status={
-                                        status.find(
-                                            (item) => item._id === user._id
-                                        ).status
-                                    }
-                                    onChangeStatus={handleChangeStatus}
-                                />
-                            ))}
-                        </tbody>
-                    </table>
+                    {userCrop.length > 0 && (
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Имя</th>
+                                    <th scope="col">Качество</th>
+                                    <th scope="col">Профессия</th>
+                                    <th scope="col">Встретился, раз</th>
+                                    <th scope="col">Оценка</th>
+                                    <th scope="col">Избранное</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {userCrop.map((user) => (
+                                    <User
+                                        key={user._id}
+                                        {...user}
+                                        onDelete={handlerDeletUser}
+                                        status={
+                                            users.find(
+                                                (item) => item._id === user._id
+                                            ).bookmark
+                                        }
+                                        onChangeStatus={handleChangeStatus}
+                                    />
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
                     <div className="d-flex justify-content-center">
                         <Pagination
                             itemsCount={count}
@@ -104,12 +115,11 @@ const Users = ({ users, status, ...rest }) => {
         )
     }
 
-    return <>{count > 0 && createTable()}</>
+    return createTable()
 }
 
 Users.propTypes = {
-    users: PropTypes.array.isRequired,
-    status: PropTypes.array.isRequired,
+    users: PropTypes.array,
     handlerDeletUser: PropTypes.func.isRequired,
     handleChangeStatus: PropTypes.func.isRequired
 }

@@ -1,21 +1,23 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Users from "./components/users.jsx"
 import API from "./api"
 
 const App = () => {
-    const [users, setUsers] = useState(API.users.fetchAll())
-    const [status, setStatus] = useState(
-        users.map((item) => ({ _id: item._id, status: false }))
-    )
+    const [users, setUsers] = useState()
+
     const handlerDeletUser = (id) => {
         setUsers((oldState) => oldState.filter((user) => user._id !== id))
     }
 
+    useEffect(() => {
+        API.users.fetchAll().then((data) => setUsers(data))
+    }, [])
+
     const handleChangeStatus = (id) => {
-        setStatus(
-            status.map((item) => {
+        setUsers(
+            users.map((item) => {
                 if (item._id === id) {
-                    item.status = !item.status
+                    item.bookmark = !item.bookmark
                 }
                 return item
             })
@@ -23,16 +25,13 @@ const App = () => {
     }
 
     return (
-        <>
-            {users.length > 0 && (
-                <Users
-                    users={users}
-                    handlerDeletUser={handlerDeletUser}
-                    handleChangeStatus={handleChangeStatus}
-                    status={status}
-                />
-            )}
-        </>
+        users && (
+            <Users
+                users={users}
+                handlerDeletUser={handlerDeletUser}
+                handleChangeStatus={handleChangeStatus}
+            />
+        )
     )
 }
 
