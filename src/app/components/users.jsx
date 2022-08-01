@@ -16,7 +16,7 @@ const Users = ({ users, ...rest }) => {
         setCurrentPage(pageIndex)
     }
     const handleProfessionlSelect = (item) => {
-        setSelectProf(item)
+        return setSelectProf(item)
     }
 
     useEffect(() => {
