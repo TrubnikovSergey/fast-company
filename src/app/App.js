@@ -13,7 +13,7 @@ const App = () => {
         API.users.fetchAll().then((data) => setUsers(data))
     }, [])
 
-    const handleChangeStatus = (id) => {
+    const handleToggleBookMark = (id) => {
         setUsers(
             users.map((item) => {
                 if (item._id === id) {
@@ -28,8 +28,8 @@ const App = () => {
         users && (
             <Users
                 users={users}
-                handlerDeletUser={handlerDeletUser}
-                handleChangeStatus={handleChangeStatus}
+                onDeleteUser={handlerDeletUser}
+                onToggleBookMark={handleToggleBookMark}
             />
         )
     )
