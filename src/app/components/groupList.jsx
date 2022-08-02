@@ -6,7 +6,7 @@ const GroupList = ({
     valueProperty,
     contentProperty,
     onItemSelect,
-    selectItem
+    selectedItem
 }) => {
     if (!Array.isArray(items)) {
         return (
@@ -16,7 +16,7 @@ const GroupList = ({
                         key={items[item][valueProperty]}
                         className={
                             "list-group-item" +
-                            (items[item] === selectItem ? " active" : "")
+                            (items[item] === selectedItem ? " active" : "")
                         }
                         onClick={() => onItemSelect(items[item])}
                         role="button"
@@ -34,7 +34,7 @@ const GroupList = ({
                     key={item[valueProperty]}
                     className={
                         "list-group-item" +
-                        (item === selectItem ? " active" : "")
+                        (item === selectedItem ? " active" : "")
                     }
                     onClick={() => onItemSelect(item)}
                     role="button"
@@ -54,7 +54,7 @@ GroupList.propTypes = {
     valueProperty: PropTypes.string.isRequired,
     contentProperty: PropTypes.string.isRequired,
     onItemSelect: PropTypes.func,
-    selectItem: PropTypes.object
+    selectedItem: PropTypes.object
 }
 
 export default GroupList

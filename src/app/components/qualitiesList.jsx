@@ -1,13 +1,19 @@
 import React from "react"
-import DecorateQualities from "./qualitie"
 import PropTypes from "prop-types"
+import Quality from "./quality"
 
 const QualitiesList = ({ qualities }) => {
-    return <DecorateQualities qualities={qualities} />
+    return (
+        <>
+            {qualities.map((qual) => (
+                <Quality key={qual._id} {...qual} />
+            ))}
+        </>
+    )
 }
 
 QualitiesList.propTypes = {
-    qualities: PropTypes.array.isRequired
+    qualities: PropTypes.array
 }
 
 export default QualitiesList
