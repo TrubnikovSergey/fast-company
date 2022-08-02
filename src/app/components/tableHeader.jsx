@@ -13,6 +13,20 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
         }
     }
 
+    const showCaret = (item) => {
+        if (item) {
+            if (selectedSort.path === item) {
+                if (selectedSort.order === "asc") {
+                    return <i className="bi bi-caret-up-fill"></i>
+                } else {
+                    return <i className="bi bi-caret-down-fill"></i>
+                }
+            } else {
+                return <i className="bi bi-caret-up-fill"></i>
+            }
+        }
+    }
+
     return (
         <thead>
             <tr>
@@ -28,6 +42,7 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
                         scope="col"
                     >
                         {columns[column].name}
+                        {showCaret(columns[column].path)}
                     </th>
                 ))}
             </tr>
