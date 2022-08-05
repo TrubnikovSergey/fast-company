@@ -12,7 +12,7 @@ const Users = () => {
     const [professions, setProfession] = useState()
     const [selectedProf, setSelectedProf] = useState()
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" })
-    const pageSize = 8
+    const pageSize = 2
 
     const [users, setUsers] = useState()
     useEffect(() => {
@@ -20,6 +20,7 @@ const Users = () => {
     }, [])
     const handleDelete = (userId) => {
         setUsers(users.filter((user) => user._id !== userId))
+        // console.log("handleDelete", users.length, currentPage, pageSize)
     }
     const handleToggleBookMark = (id) => {
         const newArray = users.map((user) => {
@@ -68,6 +69,10 @@ const Users = () => {
             [sortBy.path],
             [sortBy.order]
         )
+
+        if ((currentPage - 1) * pageSize >= sortedUsers.length) {
+            setCurrentPage(currentPage - 1)
+        }
         const usersCrop = paginate(sortedUsers, currentPage, pageSize)
         const clearFilter = () => {
             setSelectedProf()
