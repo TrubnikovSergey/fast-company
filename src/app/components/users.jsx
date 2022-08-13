@@ -7,6 +7,7 @@ import GroupList from "./groupList"
 import SearchStatus from "./searchStatus"
 import UserTable from "./usersTable"
 import _ from "lodash"
+
 const Users = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const [professions, setProfession] = useState()
@@ -20,7 +21,6 @@ const Users = () => {
     }, [])
     const handleDelete = (userId) => {
         setUsers(users.filter((user) => user._id !== userId))
-        // console.log("handleDelete", users.length, currentPage, pageSize)
     }
     const handleToggleBookMark = (id) => {
         const newArray = users.map((user) => {
