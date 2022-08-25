@@ -10,13 +10,16 @@ import _ from "lodash"
 const UsersList = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const [professions, setProfession] = useState()
+    const [searchValue, setSearchValue] = useState("")
     const [selectedProf, setSelectedProf] = useState()
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" })
     const pageSize = 8
 
     const [users, setUsers] = useState()
     useEffect(() => {
-        api.users.fetchAll().then((data) => setUsers(data))
+        api.users.fetchAll().then((data) => {
+            setUsers(data)
+        })
     }, [])
     const handleDelete = (userId) => {
         setUsers(users.filter((user) => user._id !== userId))
@@ -41,6 +44,7 @@ const UsersList = () => {
 
     const handleProfessionSelect = (item) => {
         setSelectedProf(item)
+        setSearchValue("")
     }
 
     const handlePageChange = (pageIndex) => {
@@ -58,6 +62,11 @@ const UsersList = () => {
                     JSON.stringify(user.profession) ===
                     JSON.stringify(selectedProf)
             )
+        } else if (searchValue) {
+            filteredUsers = users.filter((user) => {
+                const searchRegExp = new RegExp(`${searchValue}`)
+                return user.name.search(searchRegExp) !== -1
+            })
         } else {
             filteredUsers = users
         }
@@ -71,6 +80,10 @@ const UsersList = () => {
         const usersCrop = paginate(sortedUsers, currentPage, pageSize)
         const clearFilter = () => {
             setSelectedProf()
+        }
+
+        const handlerSearch = ({ target }) => {
+            setSearchValue(target.value)
         }
 
         return (
@@ -93,6 +106,13 @@ const UsersList = () => {
                 )}
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
+                    <input
+                        type="text"
+                        placeholder="Search ..."
+                        onChange={handlerSearch}
+                        onClick={clearFilter}
+                        value={searchValue}
+                    ></input>
                     {count > 0 && (
                         <UserTable
                             users={usersCrop}
