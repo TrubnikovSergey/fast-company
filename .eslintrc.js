@@ -8,17 +8,24 @@ module.exports = {
         ecmaFeatures: {
             jsx: true
         },
-        ecmaVersion: "latest",
+        ecmaVersion: 12,
         sourceType: "module"
     },
     plugins: ["react"],
     rules: {
-        indent: ["error", 4, { SwitchCase: 1 }],
+        semi: [2, "always"],
+        indent: [0, 4],
         "space-before-function-paren": [
             "error",
             { anonymous: "always", named: "never" }
         ],
-        quotes: 0,
-        semi: 0
+        "multiline-ternary": ["off"],
+        quotes: [
+            "error",
+            "double",
+            {
+                allowTemplateLiterals: true
+            }
+        ]
     }
-}
+};
