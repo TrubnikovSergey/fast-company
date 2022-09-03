@@ -132,58 +132,67 @@ const EditUserForm = ({ userId }) => {
 
         history.replace(`/users/${user._id}`);
     };
-    return (
-        <form onSubmit={handleSubmit}>
-            <TextField
-                label="ФИО"
-                name="name"
-                value={data.name}
-                onChange={handleChange}
-                error={errors.name}
-            />
-            <TextField
-                label="Электронная почта"
-                name="email"
-                value={data.email}
-                onChange={handleChange}
-                error={errors.email}
-            />
-            <SelectField
-                label="Выбери свою профессию"
-                defaultOption="Choose..."
-                options={professions}
-                name="profession"
-                onChange={handleChange}
-                value={data.profession}
-                error={errors.profession}
-            />
-            <RadioField
-                options={[
-                    { name: "Male", value: "male" },
-                    { name: "Female", value: "female" },
-                    { name: "Other", value: "other" }
-                ]}
-                value={data.sex}
-                name="sex"
-                onChange={handleChange}
-                label="Выберите ваш пол"
-            />
-            <MultiSelectField
-                options={qualities}
-                onChange={handleChange}
-                defaultValue={data.qualities}
-                name="qualities"
-                label="Выберите ваши качества"
-            />
-            <button
-                className="btn btn-primary w-100 mx-auto"
-                type="submit"
-                disabled={!isValid}
-            >
-                Update
-            </button>
-        </form>
-    );
+    console.log("professions", professions);
+    console.log("qualities", qualities);
+
+    let renderForm = null;
+    if (professions.length > 0 && qualities.length > 0) {
+        renderForm = (
+            <form onSubmit={handleSubmit}>
+                <TextField
+                    label="ФИО"
+                    name="name"
+                    value={data.name}
+                    onChange={handleChange}
+                    error={errors.name}
+                />
+                <TextField
+                    label="Электронная почта"
+                    name="email"
+                    value={data.email}
+                    onChange={handleChange}
+                    error={errors.email}
+                />
+                <SelectField
+                    label="Выбери свою профессию"
+                    defaultOption="Choose..."
+                    options={professions}
+                    name="profession"
+                    onChange={handleChange}
+                    value={data.profession}
+                    error={errors.profession}
+                />
+                <RadioField
+                    options={[
+                        { name: "Male", value: "male" },
+                        { name: "Female", value: "female" },
+                        { name: "Other", value: "other" }
+                    ]}
+                    value={data.sex}
+                    name="sex"
+                    onChange={handleChange}
+                    label="Выберите ваш пол"
+                />
+                <MultiSelectField
+                    options={qualities}
+                    onChange={handleChange}
+                    defaultValue={data.qualities}
+                    name="qualities"
+                    label="Выберите ваши качества"
+                />
+                <button
+                    className="btn btn-primary w-100 mx-auto"
+                    type="submit"
+                    disabled={!isValid}
+                >
+                    Update
+                </button>
+            </form>
+        );
+    } else {
+        renderForm = <h1>Loading...</h1>;
+    }
+    return renderForm;
 };
 
 EditUserForm.propTypes = {
