@@ -124,16 +124,8 @@ const EditUserForm = ({ userId }) => {
             qualities: getQualities(qualities)
         });
 
-        console.log({
-            ...data,
-            profession: getProfessionById(profession),
-            qualities: getQualities(qualities)
-        });
-
         history.replace(`/users/${user._id}`);
     };
-    console.log("professions", professions);
-    console.log("qualities", qualities);
 
     let renderForm = null;
     if (professions.length > 0 && qualities.length > 0) {
@@ -173,6 +165,7 @@ const EditUserForm = ({ userId }) => {
                     onChange={handleChange}
                     label="Выберите ваш пол"
                 />
+
                 <MultiSelectField
                     options={qualities}
                     onChange={handleChange}

@@ -1,15 +1,22 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import EditUserForm from "../../ui/editUserForm";
 
 const EditUserPage = () => {
     const { userId, edit } = useParams();
+    const history = useHistory();
 
     let renderEditUserPage = null;
     if (edit === "edit") {
         console.log("userId, edit", userId, edit);
         renderEditUserPage = (
             <div className="container mt-5">
+                <button
+                    className="btn btn-primary shadow mb-5"
+                    onClick={() => history.replace(`/users/${userId}`)}
+                >
+                    Назад
+                </button>
                 <div className="row">
                     <div className="col-md-6 offset-md-3 shadow p-4">
                         <EditUserForm userId={userId} />
