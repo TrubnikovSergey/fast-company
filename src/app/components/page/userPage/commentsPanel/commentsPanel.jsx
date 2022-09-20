@@ -5,7 +5,7 @@ import API from "../../../../api";
 import { useParams } from "react-router-dom";
 
 const CommentPanel = () => {
-    const [commentsList, setCommentsList] = useState([]);
+    const [commentsList, setCommentsList] = useState();
     const { userId } = useParams();
 
     useEffect(() => {
@@ -51,17 +51,26 @@ const CommentPanel = () => {
                     <CreateComment onCreate={handleCreate} />
                 </div>
             </div>
-
-            <div className="card mb-3">
-                <div className="card-body">
-                    <h2>Comments</h2>
-                    <hr />
-                    <CommentsList
-                        commentsList={commentsList}
-                        onDelete={handleDelete}
-                    />
+            {commentsList ? (
+                commentsList.length > 0 && (
+                    <div className="card mb-3">
+                        <div className="card-body">
+                            <h2>Comments</h2>
+                            <hr />
+                            <CommentsList
+                                commentsList={commentsList}
+                                onDelete={handleDelete}
+                            />
+                        </div>
+                    </div>
+                )
+            ) : (
+                <div className="card mb-3">
+                    <div className="card-body">
+                        <h2>Loading...</h2>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };

@@ -68,6 +68,8 @@ const CreateComment = ({ onCreate }) => {
 
         if (!isValidate) return;
 
+        setData({ ...data, userId: "", userName: "", content: "" });
+
         const userSelected = users.find((user) => user._id === data.userId);
         onCreate({ ...data, userName: userSelected.name });
     };
@@ -100,20 +102,6 @@ const CreateComment = ({ onCreate }) => {
                         label="Сообщение"
                         error={errors.content}
                     />
-                    {/* <label
-                        htmlFor="exampleFormControlTextarea1"
-                        className="form-label"
-                    >
-                        Сообщение
-                    </label>
-                    <textarea
-                        className="form-control"
-                        id="exampleFormControlTextarea1"
-                        rows="3"
-                        name="commentText"
-                        value={data.commentText}
-                        onChange={handleChange}
-                    ></textarea> */}
                 </div>
                 <div className="d-flex justify-content-end">
                     <button
