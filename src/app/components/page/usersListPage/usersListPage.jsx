@@ -8,6 +8,7 @@ import SearchStatus from "../../ui/searchStatus";
 import UserTable from "../../ui/usersTable";
 import _ from "lodash";
 import { useUser } from "../../../hooks/useUsers";
+
 const UsersListPage = () => {
     const { users } = useUser();
     const [currentPage, setCurrentPage] = useState(1);
