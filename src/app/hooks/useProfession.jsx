@@ -20,8 +20,14 @@ export const ProfessionProvider = ({ children }) => {
         }
     }, [error]);
 
-    useEffect(() => {
-        getProfessionsList();
+    useEffect(async () => {
+        try {
+            const { content } = await ProfessionService.get();
+            setProfessions(content);
+            setLoading(false);
+        } catch (error) {
+            errorCatcher(error);
+        }
     }, []);
     function errorCatcher(error) {
         const { message } = error.response.data;
@@ -31,19 +37,13 @@ export const ProfessionProvider = ({ children }) => {
         return professions.find((p) => p._id === id);
     }
 
-    async function getProfessionsList() {
-        try {
-            const { content } = await ProfessionService.get();
-            setProfessions(content);
-            setLoading(false);
-        } catch (error) {
-            errorCatcher(error);
-        }
-    }
-
     return (
         <ProfessionContext.Provider
-            value={{ isLoading, professions, getProfession }}
+            value={{
+                isLoading,
+                professions,
+                getProfession
+            }}
         >
             {children}
         </ProfessionContext.Provider>
