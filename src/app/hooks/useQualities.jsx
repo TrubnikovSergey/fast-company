@@ -14,17 +14,14 @@ export const QualitiesProvider = ({ children }) => {
     const [error, setError] = useState(null);
     const [isLoading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const getQualities = async () => {
-            try {
-                const { content } = await qualityService.fetchAll();
-                setQualities(content);
-                setLoading(false);
-            } catch (error) {
-                errorCatcher(error);
-            }
-        };
-        getQualities();
+    useEffect(async () => {
+        try {
+            const { content } = await qualityService.fetchAll();
+            setQualities(content);
+            setLoading(false);
+        } catch (error) {
+            errorCatcher(error);
+        }
     }, []);
     const getQuality = (id) => {
         return qualities.find((q) => q._id === id);
