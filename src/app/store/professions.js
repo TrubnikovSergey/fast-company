@@ -33,13 +33,26 @@ export const getProfession = (id) => async (state) => {
     return state.professions.entities.find((p) => p._id === id);
 };
 
-export const getProfessionsList = () => async (dispatch) => {
-    dispatch(professionsRequested());
-    try {
-        const { content } = await professionService.get();
-        dispatch(professionsReceived(content));
-    } catch (error) {
-        dispatch(professionsRequestFailed(error.message));
+function isOutdated(date) {
+    if (Date.now() - date > 10 * 60 * 1000) {
+        return true;
+    }
+    return false;
+}
+
+export const getProfessions = () => (state) => state.professions.entities;
+export const getProfessionsLoadingStatus = () => (state) =>
+    state.professions.isLoading;
+export const loadProfessionsList = () => async (dispatch, getState) => {
+    const { lastFetch } = getState().qualities;
+    if (isOutdated(lastFetch)) {
+        dispatch(professionsRequested());
+        try {
+            const { content } = await professionService.get();
+            dispatch(professionsReceived(content));
+        } catch (error) {
+            dispatch(professionsRequestFailed(error.message));
+        }
     }
 };
 
