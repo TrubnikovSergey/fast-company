@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAction, createSlice } from "@reduxjs/toolkit";
 import commentService from "../services/comment.service";
 
 const commentsSlice = createSlice({
@@ -19,12 +19,57 @@ const commentsSlice = createSlice({
         commentsRequestFailed: (state, action) => {
             state.error = action.payload;
             state.isLoading = false;
+        },
+        createComment: (state, action) => {
+            state.entities.push(action.payload);
+        },
+        removeComment: (state, action) => {
+            state.entities = state.entities.filter(
+                (c) => c._id !== action.payload
+            );
         }
     }
 });
 
 const { reducer: commentsReducer, actions } = commentsSlice;
-const { commentsRequested, commentsReceived, commentsRequestFailed } = actions;
+const {
+    commentsRequested,
+    commentsReceived,
+    commentsRequestFailed,
+    createComment,
+    removeComment
+} = actions;
+
+const requestAddComment = createAction("comments/requestAddComment");
+const requestAddCommentFailed = createAction(
+    "comments/requestAddCommentFailed"
+);
+const requestDelComment = createAction("comments/requestDelComment");
+const requestDelCommentFailed = createAction(
+    "comments/requestDelCommentFailed"
+);
+
+export const addComment = (comment) => async (dispatch) => {
+    dispatch(requestAddComment());
+    try {
+        const { content } = await commentService.createComment(comment);
+        dispatch(createComment(content));
+    } catch (error) {
+        dispatch(requestAddCommentFailed(error.message));
+    }
+};
+
+export const deleteComment = (id) => async (dispatch) => {
+    dispatch(requestDelComment());
+    try {
+        const { content } = await commentService.removeComment(id);
+        if (content === null) {
+            dispatch(removeComment(id));
+        }
+    } catch (error) {
+        dispatch(requestDelCommentFailed(error.message));
+    }
+};
 
 export const loadCommentsList = (userId) => async (dispatch) => {
     dispatch(commentsRequested());
